@@ -5,7 +5,7 @@ import { Movie, MovieResponse } from '../types/movie';
 import MovieCard from '../components/MovieCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 
-export default function MoviePage(): JSX.Element {
+export default function MoviePage(){
   const { category = 'popular' } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page')) || 1;

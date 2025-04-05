@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 
 const LINKS = [
+  { to: '/', label: '홈' },
   { to: '/movies/popular', label: '인기 영화' },
   { to: '/movies/now_playing', label: '상영 중' },
   { to: '/movies/top_rated', label: '평점 높은' },
@@ -17,6 +18,7 @@ export default function Navbar() {
           className={({ isActive }) =>
             isActive ? 'text-[#d2dba1] font-bold' : 'text-gray-500'
           }
+          end={to === '/'} 
         >
           {label}
         </NavLink>
