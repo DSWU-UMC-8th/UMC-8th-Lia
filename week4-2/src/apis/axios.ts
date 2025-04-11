@@ -7,7 +7,6 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-// ✅ 요청 인터셉터에서 토큰 추가
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem(LOCAL_STORAGE_KEY.accessToken);
