@@ -12,6 +12,7 @@ const MyPage = () => {
     createdAt: new Date(),
     updatedAt: new Date(),
   });
+  
 
   useEffect(() => {
     const fetchMyInfo = async () => {
