@@ -27,6 +27,7 @@ const MyPage = () => {
     fetchMyInfo();
   }, []);
 
+  console.log(data.name);
   return <div><strong>이름:</strong> {data.name}</div>;
 };
 
