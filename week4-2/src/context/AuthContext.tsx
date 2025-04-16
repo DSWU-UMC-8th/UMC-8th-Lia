@@ -2,7 +2,8 @@ import { createContext, useState, useContext, PropsWithChildren } from "react";
 import { RequestSigninDto } from "../types/auth";
 import { postSignin, postLogout } from "../apis/auth";
 import { LOCAL_STORAGE_KEY } from "../constants/key";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import useLocalStorage from "../hooks/useLocalStorage";
+
 
 // AuthContext 타입 정의
 interface AuthContextType {
@@ -20,6 +21,7 @@ export const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
+//const navigate = useNavigate();
   // accessToken 관련
   const {
     getItem: getAccessTokenFromStorage,
@@ -39,15 +41,23 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   const login = async (signInData: RequestSigninDto) => {
     try {
-      const { accessToken, refreshToken } = await postSignin(signInData);
+      const { data } = await postSignin(signInData);
 
-      // 상태 업데이트
-      setAccessToken(accessToken);
-      setRefreshToken(refreshToken);
+      if(data){
 
-      // localStorage 저장
-      setAccessTokenToStorage(accessToken);
-      setRefreshTokenToStorage(refreshToken);
+        const newAccessToken=data.accessToken;
+        const newRefreshToken=data.refreshToken;
+
+        setAccessTokenToStorage(newAccessToken);
+      setRefreshTokenToStorage(newRefreshToken);
+         // 상태 업데이트
+      setAccessToken(newAccessToken);
+      setRefreshToken(newRefreshToken);
+      alert("로그인 성공");
+      window.location.href="/my";
+      }
+
+    
     } catch (error) {
       console.error("로그인 실패:", error);
     }

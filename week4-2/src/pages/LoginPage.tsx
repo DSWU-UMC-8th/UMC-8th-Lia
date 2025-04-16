@@ -1,12 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import UseForm from "../hooks/UseForm";
 import { UserSigninInformation, validateSignin } from "../utils/validate";
-import { postSignin } from "../apis/auth";
-import { ResponseSigninDto } from "../types/auth";
-import { LOCAL_STORAGE_KEY } from "../constants/key";
-import useLocalStorage from "../hooks/useLocalStorage";
+import { useAuth } from "../context/AuthContext";
+import { useEffect } from "react";
 
 const LoginPage = () => {
-  const { setItem } = useLocalStorage();
+  const { login ,accessToken} = useAuth(); 
+  const navigate = useNavigate();
+
   const { values, errors, touched, getInputProps } = UseForm<UserSigninInformation>({
     initialValue: {
       email: "",
@@ -15,22 +16,28 @@ const LoginPage = () => {
     validate: validateSignin,
   });
 
+  useEffect(()=>{
+    if (accessToken) {
+      navigate("/");
+    }
+  }, [accessToken]);
+  
+
   const handleSubmit = async () => {
     try {
-      const response: ResponseSigninDto = await postSignin(values);
-      setItem(LOCAL_STORAGE_KEY.accessToken, response.data.accessToken);
-      alert("로그인 성공!");
-      console.log(response);
+      await login(values);
+      //navigate("/my");
     } catch (error: unknown) {
       if (error instanceof Error) {
-        alert(error.message);
+        alert("로그인 실패");
         console.error(error);
       } else {
         alert("알 수 없는 오류가 발생했습니다.");
         console.error("Unknown error:", error);
       }
     }
-  };
+  }; 
+  
 
   const isDisabled =
     Object.values(errors || {}).some((error) => error.length > 0) ||
