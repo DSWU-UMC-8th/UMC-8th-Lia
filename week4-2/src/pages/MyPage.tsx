@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { getMyInfo } from "../apis/auth";
 import { ResponseMyInfoDto } from "../types/auth";
 import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
 
 const MyPage = () => {
   const [data, setData] = useState<ResponseMyInfoDto["data"]>({
@@ -16,7 +17,6 @@ const MyPage = () => {
   });
   const { logout } = useAuth();
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const getData = async () => {
@@ -34,16 +34,12 @@ const MyPage = () => {
   };
 
   return (
-    <div>
-
-      <h1>{data?.name}님 환영합니다.</h1>
-      <img
-  src={data?.avatar || "/vite.svg"}
-  alt="프로필 이미지"
-/>
+    <div className="h-[100vh]">
+      <h1 className="text-white">{data?.name}님 환영합니다.</h1>
+      <img src={data?.avatar || "/vite.svg"} alt="프로필 이미지" />
 
       <button
-        className="cursor-pointer bg-blue-300 rounded-sm p-5 hover:scale-90"
+        className="cursor-pointer bg-blue-600 rounded-sm p-3 text-white hover:scale-90"
         onClick={handleLogout}
       >
         로그아웃

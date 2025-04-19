@@ -1,10 +1,11 @@
-import axiosInstance from "./axios";
+import { axiosInstance } from "../apis/axios";
+
 import {
   RequestSigninDto,
   RequestSignupDto,
   ResponseSigninDto,
   ResponseSignupDto,
-  ResponseMyInfoDto, 
+  ResponseMyInfoDto,
 } from "../types/auth";
 
 // 회원가입 API
@@ -29,9 +30,8 @@ export const getMyInfo = async (): Promise<ResponseMyInfoDto> => {
   return data;
 };
 
-
-export const postLogout=async()=>{
-  const {data} = await axiosInstance.post("/v1/auth/signout");
+export const postLogout = async () => {
+  const { data } = await axiosInstance.post("/v1/auth/signout");
 
   return data;
-}
+};

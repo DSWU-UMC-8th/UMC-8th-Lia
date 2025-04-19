@@ -8,16 +8,18 @@ import SignupPage from "./pages/SignupPage";
 import MyPage from "./pages/MyPage";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedLayout from "./layouts/ProtectedLayout";
+import GoogleLoginRedirectPage from "./pages/GoogleLoginRedirectPage";
 
 const publicRoutes = [
   {
     path: "/",
     element: <HomeLayout />,
-    errorElement: <NotFoundPage />,
+    errorElement: <LoginPage />,
     children: [
       { index: true, element: <HomePage /> },
       { path: "login", element: <LoginPage /> },
       { path: "signup", element: <SignupPage /> },
+      { path: "v1/auth/google/callback", element: <GoogleLoginRedirectPage /> },
     ],
   },
 ];
@@ -29,17 +31,14 @@ const protectedRoutes = [
     errorElement: <NotFoundPage />,
     children: [
       {
-        path: "my",
+        path: "mypage",
         element: <MyPage />,
       },
     ],
   },
 ];
 
-const router = createBrowserRouter([
-  ...publicRoutes,
-  ...protectedRoutes,
-]);
+const router = createBrowserRouter([...publicRoutes, ...protectedRoutes]);
 
 function App() {
   return (

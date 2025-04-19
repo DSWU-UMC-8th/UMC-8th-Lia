@@ -5,28 +5,28 @@ import { useAuth } from "../context/AuthContext";
 import { useEffect } from "react";
 
 const LoginPage = () => {
-  const { login ,accessToken} = useAuth(); 
+  const { login, accessToken } = useAuth();
   const navigate = useNavigate();
 
-  const { values, errors, touched, getInputProps } = UseForm<UserSigninInformation>({
-    initialValue: {
-      email: "",
-      password: "",
-    },
-    validate: validateSignin,
-  });
+  const { values, errors, touched, getInputProps } =
+    UseForm<UserSigninInformation>({
+      initialValue: {
+        email: "",
+        password: "",
+      },
+      validate: validateSignin,
+    });
 
-  useEffect(()=>{
+  useEffect(() => {
     if (accessToken) {
-      navigate("/");
+      navigate("/mypage");
     }
   }, [accessToken]);
-  
 
   const handleSubmit = async () => {
     try {
       await login(values);
-      //navigate("/my");
+      navigate("/mypage");
     } catch (error: unknown) {
       if (error instanceof Error) {
         alert("로그인 실패");
@@ -36,43 +36,49 @@ const LoginPage = () => {
         console.error("Unknown error:", error);
       }
     }
-  }; 
-  
+  };
 
   const isDisabled =
     Object.values(errors || {}).some((error) => error.length > 0) ||
     Object.values(values).some((value) => value === "");
 
-  return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-4">
-      <div className="w-full max-w-sm space-y-6 text-center">
-        <h2 className="text-2xl font-bold text-black">로그인</h2>
+  const handleGoogleLogin = () => {
+    window.location.href =
+      import.meta.env.VITE_SERVER_API_URL + "/v1/auth/google/login";
+  };
 
-        {/* 구글 로그인 버튼 */}
-        <button className="flex items-center justify-center w-full border border-gray-300 rounded py-2 hover:bg-gray-100 transition">
+  return (
+    <div className="bg-black flex items-center justify-center px-4 py-[5%]">
+      <div className="w-full max-w-sm space-y-6 text-center">
+        <h2 className="text-2xl font-bold text-white">로그인</h2>
+
+        <button
+          className="flex items-center justify-center w-full border border-gray-300 rounded py-2 hover:bg-gray-300 transition text-gray-300 hover:text-black cursor-pointer"
+          onClick={handleGoogleLogin}
+        >
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1024px-Google_%22G%22_logo.svg.png"
             alt="Google"
             className="w-5 h-5 mr-2"
           />
-          <span className="text-sm text-gray-700">구글 로그인</span>
+          <span className="text-sm">구글 로그인</span>
         </button>
 
-        {/* 구분선 */}
         <div className="flex items-center justify-between text-gray-400 text-sm">
           <hr className="flex-1 border-gray-200" />
           <span className="px-2">OR</span>
           <hr className="flex-1 border-gray-200" />
         </div>
 
-        {/* 이메일 / 비밀번호 입력 */}
         <div className="flex flex-col gap-3">
           <input
             {...getInputProps("email")}
             type="email"
             placeholder="이메일"
-            className={`p-2 border rounded w-full text-sm ${
-              errors?.email && touched?.email ? "border-red-500 bg-red-100" : "border-gray-300"
+            className={`p-2 border rounded w-full text-sm text-gray-300 ${
+              errors?.email && touched?.email
+                ? "border-red-500"
+                : "border-gray-300"
             }`}
           />
           {errors?.email && touched?.email && (
@@ -83,8 +89,10 @@ const LoginPage = () => {
             {...getInputProps("password")}
             type="password"
             placeholder="비밀번호"
-            className={`p-2 border rounded w-full text-sm ${
-              errors?.password && touched?.password ? "border-red-500 bg-red-100" : "border-gray-300"
+            className={`p-2 border rounded w-full text-sm text-gray-300 ${
+              errors?.password && touched?.password
+                ? "border-red-500"
+                : "border-gray-300"
             }`}
           />
           {errors?.password && touched?.password && (
@@ -92,12 +100,11 @@ const LoginPage = () => {
           )}
         </div>
 
-        {/* 로그인 버튼 */}
         <button
           type="button"
           onClick={handleSubmit}
           disabled={isDisabled}
-          className="w-full bg-pink-500 text-white py-2 rounded text-sm font-medium hover:bg-pink-600 transition disabled:bg-gray-300"
+          className="w-full bg-blue-600 text-white py-2 rounded cursor-pointer text-sm font-medium transition disabled:bg-gray-300 disabled:cursor-not-allowed"
         >
           로그인
         </button>

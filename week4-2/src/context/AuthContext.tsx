@@ -4,7 +4,6 @@ import { postSignin, postLogout } from "../apis/auth";
 import { LOCAL_STORAGE_KEY } from "../constants/key";
 import useLocalStorage from "../hooks/useLocalStorage";
 
-
 // AuthContext 타입 정의
 interface AuthContextType {
   accessToken: string | null;
@@ -21,7 +20,7 @@ export const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-//const navigate = useNavigate();
+  //const navigate = useNavigate();
   // accessToken 관련
   const {
     getItem: getAccessTokenFromStorage,
@@ -36,28 +35,29 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     removeItem: removeRefreshTokenFromStorage,
   } = useLocalStorage(LOCAL_STORAGE_KEY.refreshToken);
 
-  const [accessToken, setAccessToken] = useState<string | null>(getAccessTokenFromStorage());
-  const [refreshToken, setRefreshToken] = useState<string | null>(getRefreshTokenFromStorage());
+  const [accessToken, setAccessToken] = useState<string | null>(
+    getAccessTokenFromStorage()
+  );
+  const [refreshToken, setRefreshToken] = useState<string | null>(
+    getRefreshTokenFromStorage()
+  );
 
   const login = async (signInData: RequestSigninDto) => {
     try {
       const { data } = await postSignin(signInData);
 
-      if(data){
-
-        const newAccessToken=data.accessToken;
-        const newRefreshToken=data.refreshToken;
+      if (data) {
+        const newAccessToken = data.accessToken;
+        const newRefreshToken = data.refreshToken;
 
         setAccessTokenToStorage(newAccessToken);
-      setRefreshTokenToStorage(newRefreshToken);
-         // 상태 업데이트
-      setAccessToken(newAccessToken);
-      setRefreshToken(newRefreshToken);
-      alert("로그인 성공");
-      window.location.href="/my";
+        setRefreshTokenToStorage(newRefreshToken);
+        // 상태 업데이트
+        setAccessToken(newAccessToken);
+        setRefreshToken(newRefreshToken);
+        alert("로그인 성공");
+        window.location.href = "/my";
       }
-
-    
     } catch (error) {
       console.error("로그인 실패:", error);
     }
@@ -88,10 +88,10 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
 // Context 사용 훅
 export const useAuth = () => {
-    const context=useContext(AuthContext);
-    if(!context){
-        throw new Error("AuthContext를 찾을 수 없습니다.");
-    }
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("AuthContext를 찾을 수 없습니다.");
+  }
 
-    return context
-}
+  return context;
+};
