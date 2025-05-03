@@ -1,9 +1,9 @@
-export type UserSigninInformation = {
+export type USerSigninInformation = {
   email: string;
   password: string;
 };
 
-function validateUser(values: UserSigninInformation) {
+function validateUser(values: USerSigninInformation) {
   const errors = {
     email: "",
     password: "",
@@ -24,7 +24,7 @@ function validateUser(values: UserSigninInformation) {
   return errors;
 }
 
-function validateSignin(values: UserSigninInformation) {
+function validateSignin(values: USerSigninInformation) {
   return validateUser(values);
 }
 

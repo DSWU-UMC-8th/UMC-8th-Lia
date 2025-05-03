@@ -3,8 +3,8 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { postSignup } from "../apis/auth";
+import { useNavigate } from "react-router-dom";
 
-// zod 스키마
 const schema = z
   .object({
     email: z.string().email({ message: "올바른 이메일 형식이 아닙니다." }),
@@ -23,7 +23,6 @@ const schema = z
 type FormFields = z.infer<typeof schema>;
 
 const SignupPage = () => {
-  const [step, setStep] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordCheck, setShowPasswordCheck] = useState(false);
 
@@ -41,11 +40,17 @@ const SignupPage = () => {
   const password = watch("password");
   const passwordCheck = watch("passwordCheck");
   const name = watch("name");
+  const navigate = useNavigate();
 
-  const isEmailValid = !errors.email && email;
-  const isPasswordValid =
-    !errors.password && !errors.passwordCheck && password === passwordCheck;
-  const isNameValid = !errors.name && name;
+  const isValid =
+    email &&
+    password &&
+    passwordCheck &&
+    name &&
+    !errors.email &&
+    !errors.password &&
+    !errors.passwordCheck &&
+    !errors.name;
 
   const onSubmit = async (data: FormFields) => {
     const { passwordCheck, ...rest } = data;
@@ -58,6 +63,7 @@ const SignupPage = () => {
       });
       alert("회원가입 완료!");
       console.log(response);
+      navigate("/login");
     } catch (err) {
       alert("회원가입 실패");
       console.error(err);
@@ -65,102 +71,78 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white text-black flex flex-col items-center justify-center px-4">
+    <div className="text-white flex flex-col items-center justify-center px-4 py-[5%]">
       <div className="w-full max-w-sm text-center space-y-6">
         <h2 className="text-2xl font-bold">회원가입</h2>
 
-        {step === 1 && (
-          <div className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          <input
+            {...register("email")}
+            type="email"
+            placeholder="이메일"
+            className="p-2 rounded border border-gray-300 bg-white text-gray-500"
+          />
+          {errors.email && (
+            <p className="text-red-500 text-sm">{errors.email.message}</p>
+          )}
+
+          <div className="relative">
             <input
-              {...register("email")}
-              type="email"
-              placeholder="이메일"
-              className="p-2 rounded border border-gray-300 bg-white"
+              {...register("password")}
+              type={showPassword ? "text" : "password"}
+              placeholder="비밀번호"
+              className="w-full p-2 rounded border border-gray-300 bg-white text-gray-500"
             />
-            {errors.email && (
-              <p className="text-red-500 text-sm">{errors.email.message}</p>
-            )}
             <button
               type="button"
-              disabled={!isEmailValid}
-              onClick={() => setStep(2)}
-              className="bg-pink-500 text-white py-2 rounded disabled:bg-gray-300"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-2 top-2 text-sm text-gray-500"
             >
-              다음
+              {showPassword ? "숨김" : "보기"}
             </button>
-          </div>
-        )}
-
-        {step === 2 && (
-          <div className="flex flex-col gap-4">
-            <p className="text-base text-gray-500">✉️{email}</p>
-            <div className="relative">
-              <input
-                {...register("password")}
-                type={showPassword ? "text" : "password"}
-                placeholder="비밀번호"
-                className="w-full p-2 rounded border border-gray-300 bg-white"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute right-2 top-2 text-sm"
-              >
-              </button>
-            </div>
-            <div className="relative">
-              <input
-                {...register("passwordCheck")}
-                type={showPasswordCheck ? "text" : "password"}
-                placeholder="비밀번호 확인"
-                className="w-full p-2 rounded border border-gray-300 bg-white"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPasswordCheck((prev) => !prev)}
-                className="absolute right-2 top-2 text-sm"
-              >
-              </button>
-            </div>
-            {(errors.password || errors.passwordCheck) && (
-              <p className="text-red-500 text-sm">
-                {errors.password?.message || errors.passwordCheck?.message}
-              </p>
+            {errors.password && (
+              <p className="text-red-500 text-sm">{errors.password?.message}</p>
             )}
+          </div>
+
+          <div className="relative">
+            <input
+              {...register("passwordCheck")}
+              type={showPasswordCheck ? "text" : "password"}
+              placeholder="비밀번호 확인"
+              className="w-full p-2 rounded border border-gray-300 bg-white text-gray-500"
+            />
             <button
               type="button"
-              disabled={!isPasswordValid}
-              onClick={() => setStep(3)}
-              className="bg-pink-500 text-white py-2 rounded disabled:bg-gray-300"
+              onClick={() => setShowPasswordCheck((prev) => !prev)}
+              className="absolute right-2 top-2 text-sm text-gray-500"
             >
-              다음
+              {showPasswordCheck ? "숨김" : "보기"}
             </button>
           </div>
-        )}
+          {errors.passwordCheck && (
+            <p className="text-red-500 text-sm">
+              {errors.passwordCheck?.message}
+            </p>
+          )}
 
-        {step === 3 && (
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-            {/* 프로필 이미지 UI */}
-            <div className="w-24 h-24 mx-auto bg-gray-200 rounded-full flex items-center justify-center">
-              <span className="text-4xl text-gray-600">👤</span>
-            </div>
-            <input
-              {...register("name")}
-              placeholder="닉네임"
-              className="p-2 rounded border border-gray-300 bg-white"
-            />
-            {errors.name && (
-              <p className="text-red-500 text-sm">{errors.name.message}</p>
-            )}
-            <button
-              type="submit"
-              disabled={!isNameValid}
-              className="bg-pink-500 text-white py-2 rounded disabled:bg-gray-300"
-            >
-              회원가입 완료
-            </button>
-          </form>
-        )}
+          <input
+            {...register("name")}
+            placeholder="닉네임"
+            className="p-2 rounded border border-gray-300 bg-white text-gray-500"
+          />
+          {errors.name && (
+            <p className="text-red-500 text-sm">{errors.name.message}</p>
+          )}
+
+          <button
+            type="submit"
+            disabled={!isValid}
+            className="bg-blue-600 cursor-pointer text-white py-2 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
+            회원가입
+          </button>
+        </form>
       </div>
     </div>
   );
