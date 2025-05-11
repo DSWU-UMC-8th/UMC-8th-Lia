@@ -1,18 +1,32 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useEffect } from "react";
+import { getMyInfo } from "../apis/auth";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { accessToken, logout } = useAuth();
+  const { accessToken, logout, user, setUser } = useAuth(); 
 
   const handleLogout = async () => {
     await logout();
     window.location.href = "/";
   };
 
-  const handleMypage = async () => {
+  const handleMypage = () => {
     window.location.href = "/mypage";
   };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await getMyInfo();
+        setUser(res.data); 
+      } catch (error) {
+        console.error("사용자 정보 불러오기 실패", error);
+      }
+    };
+    if (accessToken) fetchUser();
+  }, [accessToken, setUser]);
 
   return (
     <nav className="flex justify-between items-center px-6 py-4 shadow-2xs bg-black/90 p-0">
@@ -23,9 +37,12 @@ const Navbar = () => {
         App
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex items-center gap-4">
         {accessToken ? (
           <>
+            <span className="text-sm text-white">
+              {user?.name ?? "사용자"}님 반갑습니다
+            </span>
             <button
               onClick={handleMypage}
               className="text-sm text-white hover:text-gray-300 cursor-pointer"
