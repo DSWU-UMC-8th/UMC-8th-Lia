@@ -3,13 +3,24 @@ import { RequestSigninDto } from "../types/auth";
 import { postSignin, postLogout } from "../apis/auth";
 import { LOCAL_STORAGE_KEY } from "../constants/key";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { ResponseMyInfoDto } from "../types/auth"; 
+
 
 // AuthContext 타입 정의
+/*interface AuthContextType {
+  accessToken: string | null;
+  refreshToken: string | null;
+  login: (signInData: RequestSigninDto) => Promise<void>;
+  logout: () => Promise<void>;
+}*/
+
 interface AuthContextType {
   accessToken: string | null;
   refreshToken: string | null;
   login: (signInData: RequestSigninDto) => Promise<void>;
   logout: () => Promise<void>;
+  user: ResponseMyInfoDto["data"] | null;
+  setUser: React.Dispatch<React.SetStateAction<ResponseMyInfoDto["data"] | null>>;
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -41,6 +52,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [refreshToken, setRefreshToken] = useState<string | null>(
     getRefreshTokenFromStorage()
   );
+  const [user, setUser] = useState<ResponseMyInfoDto["data"] | null>(null);
+
 
   const login = async (signInData: RequestSigninDto) => {
     try {
@@ -80,7 +93,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <AuthContext.Provider value={{ accessToken, refreshToken, login, logout }}>
+    <AuthContext.Provider value={{ accessToken, refreshToken, login, logout,user,
+    setUser, }}>
       {children}
     </AuthContext.Provider>
   );
