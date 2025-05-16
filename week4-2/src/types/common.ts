@@ -7,6 +7,8 @@ export type CommonResponse<T> = {
   data: T;
 };
 
+
+
 export type CursorBasedResponse<T> = CommonResponse<{
   data: T;
   nextCursor: number | null;
