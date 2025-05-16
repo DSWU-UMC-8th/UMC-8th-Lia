@@ -23,6 +23,7 @@ const publicRoutes = [
       { path: "login", element: <LoginPage /> },
       { path: "signup", element: <SignupPage /> },
       { path: "v1/auth/google/callback", element: <GoogleLoginRedirectPage /> },
+      { path: "lps/:id", element: <LpDetailPage /> },
     ],
   },
 ];
@@ -37,7 +38,7 @@ const protectedRoutes = [
         path: "mypage",
         element: <MyPage />,
       },
-      { path: "lp/:id", element: <LpDetailPage /> },
+      /*{ path: "lp/:id", element: <LpDetailPage /> },*/
     ],
   },
 ];
