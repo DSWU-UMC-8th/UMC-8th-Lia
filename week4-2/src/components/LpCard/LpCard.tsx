@@ -28,10 +28,10 @@ const LpCard = ({ lp }: LpCardProps) => {
             hover:scale-120 hover:z-20 z-0 transition-transform duration-200 relative group cursor-pointer"
     >
       <img
-        src="/lp.png"
-        alt={lp.title}
-        className="w-full h-full object-cover"
-      />
+  src={lp.thumbnail ?? "/lp.png"} 
+  alt={lp.title}
+  className="w-full h-full object-cover"
+/>
 
       <div
         className="absolute bottom-0 left-0 size-full p-3
