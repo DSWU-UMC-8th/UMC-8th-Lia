@@ -81,11 +81,12 @@ const LpDetailPage = () => {
               className="animate-spin relative w-72 h-72 rounded-full border-[6px] border-zinc-700"
               style={{ animationDuration: "13s" }}
             >
+              
               <img
-                src="/lp.png"
-                alt="lp cover"
-                className="w-full h-full object-cover rounded-full"
-              />
+  src={lp.thumbnail ?? "/lp.png"} 
+ alt="lp cover"
+  className="w-full h-full object-cover rounded-full"
+/>
               <div className="absolute top-1/2 left-1/2 w-6 h-6 bg-white rounded-full -translate-x-1/2 -translate-y-1/2 z-10 border border-gray-800" />
             </div>
           </div>

@@ -28,7 +28,7 @@ const publicRoutes = [
   },
 ];
 
-const protectedRoutes = [
+/*const protectedRoutes = [
   {
     path: "/",
     element: <ProtectedLayout />,
@@ -38,7 +38,23 @@ const protectedRoutes = [
         path: "mypage",
         element: <MyPage />,
       },
-      /*{ path: "lp/:id", element: <LpDetailPage /> },*/
+     
+    ],
+  },
+];*/
+const protectedRoutes = [
+  {
+    path: "/",
+    element: <ProtectedLayout />,
+    errorElement: <NotFoundPage />,
+    children: [
+      {
+        path: "mypage",
+        element: <HomeLayout />,
+        children: [
+          { index: true, element: <MyPage /> },
+        ],
+      },
     ],
   },
 ];
