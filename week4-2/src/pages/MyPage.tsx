@@ -9,7 +9,9 @@ import fallbackImg from "../assets/profile.jpg";
 
 const MyPage = () => {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+
+  const { logout, setUser } = useAuth();
+
 
   const { data, isLoading } = useGetInfo();
   const { mutate: updateMyInfo } = useUpdateMyInfo();
@@ -60,14 +62,47 @@ const MyPage = () => {
     }
   };
 
+
+
   const handleSave = () => {
-    if (!name.trim()) {
-      alert("닉네임은 빈칸일 수 없습니다.");
-      return;
+  if (!name.trim()) {
+    alert("닉네임은 빈칸일 수 없습니다.");
+    return;
+  }
+
+  updateMyInfo(
+    {
+      name,
+      bio,
+      avatar: uploadedImageUrl,
+    },
+    {
+      onSuccess: () => {
+        setAvatar(uploadedImageUrl);
+        setEditMode(false);
+
+        // ✅ 닉네임 및 bio/아바타 전역 상태로 업데이트
+        setUser((prevUser: any) => ({
+          ...prevUser,
+          name,
+          bio,
+          avatar: uploadedImageUrl,
+        }));
+
+        // ✅ localStorage도 동기화
+        const updatedUser = {
+          ...data?.data,
+          name,
+          bio,
+          avatar: uploadedImageUrl,
+        };
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+      },
     }
-    updateMyInfo({ name, bio, avatar: uploadedImageUrl });
-    setEditMode(false);
-  };
+  );
+};
+
+
 
 
 
@@ -128,8 +163,10 @@ const MyPage = () => {
           </div>
         ) : (
           <>
-            <h2 className="mt-4 text-xl font-semibold">{data?.data?.name}</h2>
-            <p className="text-gray-300 mt-1">{data?.data?.bio || "자기소개 없음"}</p>
+      
+            <h2 className="mt-4 text-xl font-semibold">{name}</h2>
+<p className="text-gray-300 mt-1">{bio || "자기소개 없음"}</p>
+
             <p className="text-gray-500 text-sm mt-1">{data?.data?.email}</p>
 
             <div className="flex justify-center gap-4 mt-5">

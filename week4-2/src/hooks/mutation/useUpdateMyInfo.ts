@@ -16,50 +16,57 @@ function useUpdateMyInfo() {
 
 export default useUpdateMyInfo;*/
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { updateMyInfo } from "../../apis/auth";
+import { QUERY_KEY } from "../../constants/key";
+import { queryClient } from "../../App";
+import { ResponseMyInfoDto } from "../../types/auth";
 
-import { useAuth } from "../../context/AuthContext";
-import { patchMyInfo } from "../../apis/auth";
-
-const useUpdateMyInfo = () => {
-  const queryClient = useQueryClient();
-  const { setUser } = useAuth();
-
+function useUpdateMyInfo() {
   return useMutation({
-    mutationFn: patchMyInfo,
-    onMutate: async (newData) => {
-      await queryClient.cancelQueries({ queryKey: ["myInfo"] });
-      const previous = queryClient.getQueryData(["myInfo"]);
+    mutationFn: updateMyInfo,
 
-      // ✅ 낙관적으로 context의 사용자 정보 업데이트
-      setUser((prev) =>
-        prev ? { ...prev, name: newData.name, bio: newData.bio, avatar: newData.avatar } : prev
-      );
+    onMutate: async (newInfo) => {
 
-      queryClient.setQueryData(["myInfo"], (old: any) => {
-        if (!old?.data) return old;
-        return {
-          ...old,
+      await queryClient.cancelQueries({ queryKey: [QUERY_KEY.myInfo] });
+
+
+      const previousData = queryClient.getQueryData<ResponseMyInfoDto>([
+        QUERY_KEY.myInfo,
+      ]);
+
+     
+      if (previousData) {
+        const optimisticData: ResponseMyInfoDto = {
+          ...previousData,
           data: {
-            ...old.data,
-            name: newData.name,
-            bio: newData.bio,
-            avatar: newData.avatar,
+            ...previousData.data,
+            name: newInfo.name,
+            bio: newInfo.bio,
+            avatar: newInfo.avatar,
           },
         };
-      });
 
-      return { previous };
+        queryClient.setQueryData([QUERY_KEY.myInfo], optimisticData);
+      }
+
+      return { previousData };
     },
-    onError: (_err, _newData, context) => {
-      // 🔄 실패하면 롤백
-      queryClient.setQueryData(["myInfo"], context?.previous);
+
+
+    onError: (err, newInfo, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData([QUERY_KEY.myInfo], context.previousData);
+      }
     },
+
+   
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["myInfo"] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.myInfo] });
     },
   });
-};
+}
 
 export default useUpdateMyInfo;
+
 
