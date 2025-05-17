@@ -83,3 +83,10 @@ export type ResponseCommentListDto = {
     userId: number;
     lpId: number;
   }>;
+  export interface UpdateLpRequest {
+  lpId: number;
+  title: string;
+  content: string;
+  tags: string[];
+  thumbnail: string;
+}
