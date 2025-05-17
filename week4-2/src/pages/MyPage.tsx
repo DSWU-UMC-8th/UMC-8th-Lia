@@ -69,6 +69,8 @@ const MyPage = () => {
     setEditMode(false);
   };
 
+
+
   if (isLoading) return <div className="text-center mt-10 text-white">불러오는 중...</div>;
 
   return (

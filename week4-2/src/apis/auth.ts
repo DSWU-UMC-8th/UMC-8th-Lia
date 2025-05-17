@@ -63,3 +63,19 @@ export const postWithdraw = async () => {
   const { data } = await axiosInstance.delete("/v1/users"); 
   return data;
 };
+
+export const patchMyInfo = async ({
+  name,
+  bio,
+  avatar,
+}: {
+  name: string;
+  bio: string;
+  avatar: string;
+}) => {
+  return axiosInstance.patch("/v1/users/me", {
+    name,
+    bio,
+    avatar,
+  });
+};

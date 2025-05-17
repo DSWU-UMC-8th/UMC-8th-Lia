@@ -24,10 +24,12 @@ const LpDetailPage = () => {
     queryFn: getMyInfo,
   });
 
-  const { mutate: likeMutate } = usePostLike();
-  const { mutate: dislikeMutate } = useDeleteLike();
+  /*const { mutate: likeMutate } = usePostLike();
+  const { mutate: dislikeMutate } = useDeleteLike();*/
   const { mutate: deleteLp } = useDeleteLp();
   const { mutate: updateLp } = useUpdateLp();
+const { mutate: likeMutate } = usePostLike(lpId, userInfo?.data.id);
+const { mutate: dislikeMutate } = useDeleteLike(lpId, userInfo?.data.id);
 
   const [isEditMode, setIsEditMode] = useState(false);
   const [editTitle, setEditTitle] = useState("");
