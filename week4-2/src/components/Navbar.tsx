@@ -2,25 +2,27 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useEffect } from "react";
 import { getMyInfo } from "../apis/auth";
+import useLogout from "../hooks/mutation/useLogout"; // ✅ 추가
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { accessToken, logout, user, setUser } = useAuth(); 
+  const { accessToken, user, setUser } = useAuth();
 
-  const handleLogout = async () => {
-    await logout();
-    window.location.href = "/";
+  const logoutMutation = useLogout(); // ✅ useMutation 활용
+
+  const handleLogout = () => {
+    logoutMutation.mutate(); // ✅ 버튼 클릭 시 mutate 실행
   };
 
   const handleMypage = () => {
-    window.location.href = "/mypage";
+    navigate("/mypage");
   };
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const res = await getMyInfo();
-        setUser(res.data); 
+        setUser(res.data);
       } catch (error) {
         console.error("사용자 정보 불러오기 실패", error);
       }
@@ -52,8 +54,9 @@ const Navbar = () => {
             <button
               onClick={handleLogout}
               className="text-sm text-white hover:text-gray-300 cursor-pointer"
+              disabled={logoutMutation.isPending}
             >
-              로그아웃
+              {logoutMutation.isPending ? "로그아웃 중..." : "로그아웃"}
             </button>
           </>
         ) : (
