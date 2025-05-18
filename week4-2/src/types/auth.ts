@@ -25,3 +25,17 @@ export type ResponseMyInfoDto = CommonResponse<{
   createdAt: Date;
   updatedAt: Date;
 }>;
+
+
+export type RequestSigninDto = {
+  email: string;
+  password: string;
+}
+
+export type ResponseSigninDto = CommonResponse<{
+  id: number;
+  name: string;
+  accessToken: string;
+  refreshToken: string;
+}>
+

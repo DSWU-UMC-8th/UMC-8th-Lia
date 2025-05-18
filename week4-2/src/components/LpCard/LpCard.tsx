@@ -10,7 +10,7 @@ const LpCard = ({ lp }: LpCardProps) => {
   const navigate = useNavigate();
   const { accessToken } = useAuth();
 
-  const handleCardClick = (id: number) => {
+  /*const handleCardClick = (id: number) => {
     if (!accessToken) {
       if (confirm("로그인이 필요한 서비스입니다. 로그인을 해주세요!")) {
         navigate("/login");
@@ -18,19 +18,20 @@ const LpCard = ({ lp }: LpCardProps) => {
     } else {
       navigate(`/lp/${id}`);
     }
-  };
+  };*/
 
   return (
     <div
-      onClick={() => handleCardClick(lp.id)}
+      /*onClick={() => handleCardClick(lp.id)}*/
+      onClick={() => navigate(`/lps/${lp.id}`)}
       className="w-full aspect-square bg-gray-800 overflow-hidden rounded
-            hover:scale-120 hover:z-20 z-0 transition-transform duration-200 relative group"
+            hover:scale-120 hover:z-20 z-0 transition-transform duration-200 relative group cursor-pointer"
     >
       <img
-        src="/lp.png"
-        alt={lp.title}
-        className="w-full h-full object-cover"
-      />
+  src={lp.thumbnail ?? "/lp.png"} 
+  alt={lp.title}
+  className="w-full h-full object-cover"
+/>
 
       <div
         className="absolute bottom-0 left-0 size-full p-3

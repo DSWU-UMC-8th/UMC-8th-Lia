@@ -23,11 +23,12 @@ const publicRoutes = [
       { path: "login", element: <LoginPage /> },
       { path: "signup", element: <SignupPage /> },
       { path: "v1/auth/google/callback", element: <GoogleLoginRedirectPage /> },
+      { path: "lps/:id", element: <LpDetailPage /> },
     ],
   },
 ];
 
-const protectedRoutes = [
+/*const protectedRoutes = [
   {
     path: "/",
     element: <ProtectedLayout />,
@@ -37,7 +38,23 @@ const protectedRoutes = [
         path: "mypage",
         element: <MyPage />,
       },
-      { path: "lp/:id", element: <LpDetailPage /> },
+     
+    ],
+  },
+];*/
+const protectedRoutes = [
+  {
+    path: "/",
+    element: <ProtectedLayout />,
+    errorElement: <NotFoundPage />,
+    children: [
+      {
+        path: "mypage",
+        element: <HomeLayout />,
+        children: [
+          { index: true, element: <MyPage /> },
+        ],
+      },
     ],
   },
 ];
