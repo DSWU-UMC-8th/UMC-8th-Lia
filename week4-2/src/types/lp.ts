@@ -90,3 +90,16 @@ export type ResponseCommentListDto = {
   tags: string[];
   thumbnail: string;
 }
+
+
+  export type RequestLpDto = {
+    lpId: number;
+  }
+  
+
+
+  export type ResponseSearchByTagDto = CommonResponse<{
+    data: Lp[];
+    nextCursor: number;
+    hasNext: boolean;
+  }>;

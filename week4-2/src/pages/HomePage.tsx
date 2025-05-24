@@ -7,25 +7,49 @@ import LpCardSkeletonList from "../components/LpCard/LpCardSkeletonList";
 import Footer from "../components/Footer";
 import LPModal from "../components/LPModal";
 
+import useDebounce from "../hooks/useDebounce";
+import { SEARCH_DEBOUNCE_DELAY } from "../constants/delay";
+import useSearchLpList from "../hooks/queries/useSearchLpList";
+import { useSearchContext } from "../context/SearchContext"; 
+
 const HomePage = () => {
    const [open, setOpen] = useState(false);
   const [order, setOrder] = useState<PAGINATION_ORDER>(PAGINATION_ORDER.desc);
   // const {data, isPending, isError } = useGetLpList({order});
-  const [search, setSearch] = useState("");
-  const {
+  //const [search, setSearch] = useState("");
+
+const { search, setSearch } = useSearchContext();
+
+  const debouncedValue = useDebounce(search, SEARCH_DEBOUNCE_DELAY);
+  const [searchMode, setSearchMode] = useState(false);
+
+
+  
+
+   const {
     data: lps,
     isFetching,
     hasNextPage,
     isPending,
     fetchNextPage,
     isError,
-  } = useGetInfiniteLpList(3, search,order);
+  } = useGetInfiniteLpList({
+    limit: 50,
+    debouncedValue,
+    order: PAGINATION_ORDER.desc,
+  });
+
+  const {
+    data: searchResult,
+    isFetching: isSearching,
+  } = useSearchLpList(debouncedValue, searchMode && debouncedValue.length > 0);
+
 
   const { ref, inView } = useInView({
     threshold: 0,
   });
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (inView) {
       if (!isFetching && hasNextPage) {
         fetchNextPage();
@@ -39,6 +63,20 @@ const HomePage = () => {
 
   if (isError) {
     <div className={"mt-20"}>Error</div>;
+  }*/
+
+  useEffect(() => {
+    setSearchMode(debouncedValue.trim().length > 0);
+  }, [debouncedValue]);
+
+  useEffect(() => {
+    if (inView && !searchMode) {
+      !isFetching && hasNextPage && fetchNextPage();
+    }
+  }, [inView, isFetching, hasNextPage, fetchNextPage, searchMode]);
+
+  if (isError) {
+    return <div className="mt-20">Error</div>;
   }
 
   return (
@@ -89,7 +127,11 @@ const HomePage = () => {
           ))}
         {isFetching && <LpCardSkeletonList count={20} />}
       </div>
-      <div ref={ref} className="h-2"></div>
+       {/*<div ref={ref} className="h-2"></div>*/}
+
+      {/* 무한스크롤 ref */}
+      {!searchMode && <div ref={ref} className="h-2" />}
+
 
       {/* ✅ LP 작성 모달 버튼 */}
       {open && <LPModal onClose={() => setOpen(false)} />}

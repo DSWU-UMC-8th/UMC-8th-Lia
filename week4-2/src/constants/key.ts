@@ -10,4 +10,5 @@ export const QUERY_KEY = {
   lp: "lp",
   comments: "comments",
   myInfo: "myInfo",
+  search: "search",
 }
