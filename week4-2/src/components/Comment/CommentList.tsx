@@ -34,7 +34,6 @@ const CommentList = ({ lpId }: { lpId: number }) => {
 
       <CommentForm lpId={lpId} />
 
-
       <div className="flex gap-2 my-3 mt-5 justify-end text-sm">
         <button
           onClick={() => setOrder("asc")}
@@ -56,9 +55,8 @@ const CommentList = ({ lpId }: { lpId: number }) => {
 
       <div className="rounded-md bg-[#1e1e1e]">
         {comments.map((comment) => (
-  <CommentItem key={comment.id} comment={comment} lpId={lpId} />
-))}
-
+          <CommentItem key={comment.id} comment={comment} lpId={lpId} />
+        ))}
 
         {isFetching && <CommentSkeletonList count={5} />}
         <div ref={ref} className="h-6" />

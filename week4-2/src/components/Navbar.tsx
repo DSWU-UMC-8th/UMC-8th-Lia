@@ -2,43 +2,42 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useEffect } from "react";
 import { getMyInfo } from "../apis/auth";
-import useLogout from "../hooks/mutation/useLogout"; // ✅ 추가
+import useLogout from "../hooks/mutation/useLogout";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const { accessToken, user, setUser } = useAuth();
 
-  const logoutMutation = useLogout(); // ✅ useMutation 활용
+  const logoutMutation = useLogout();
 
   const handleLogout = () => {
-    logoutMutation.mutate(); // ✅ 버튼 클릭 시 mutate 실행
+    logoutMutation.mutate();
   };
 
   const handleMypage = () => {
     navigate("/mypage");
   };
 
- useEffect(() => {
-  const fetchUser = async () => {
-    try {
-      const res = await getMyInfo();
-      setUser(res.data);
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await getMyInfo();
+        setUser(res.data);
 
-      // localStorage에도 저장
-      localStorage.setItem("user", JSON.stringify(res.data));
-    } catch (error) {
-      console.error("사용자 정보 불러오기 실패", error);
+        // localStorage에도 저장
+        localStorage.setItem("user", JSON.stringify(res.data));
+      } catch (error) {
+        console.error("사용자 정보 불러오기 실패", error);
+      }
+    };
+
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    } else if (accessToken) {
+      fetchUser();
     }
-  };
-
-  const savedUser = localStorage.getItem("user");
-  if (savedUser) {
-    setUser(JSON.parse(savedUser));
-  } else if (accessToken) {
-    fetchUser();
-  }
-}, [accessToken, setUser]);
-
+  }, [accessToken, setUser]);
 
   return (
     <nav className="flex justify-between items-center px-6 py-4 shadow-2xs bg-black/90 p-0">

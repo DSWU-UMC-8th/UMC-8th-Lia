@@ -57,15 +57,15 @@ const CommentItem = ({ comment, lpId }: CommentItemProps) => {
   return (
     <div className="flex items-start gap-3 p-3 border-b border-gray-700 relative">
       <img
-  src={comment.author.avatar || fallbackImg}
-  alt={comment.author.name}
-  className="w-8 h-8 rounded-full object-cover"
-  onError={(e) => {
-    const target = e.currentTarget;
-    target.onerror = null;
-    target.src = fallbackImg;
-  }}
-/>
+        src={comment.author.avatar || fallbackImg}
+        alt={comment.author.name}
+        className="w-8 h-8 rounded-full object-cover"
+        onError={(e) => {
+          const target = e.currentTarget;
+          target.onerror = null;
+          target.src = fallbackImg;
+        }}
+      />
       <div className="flex flex-col flex-grow">
         <div className="flex justify-between items-center">
           <span className="font-semibold text-sm">{comment.author.name}</span>

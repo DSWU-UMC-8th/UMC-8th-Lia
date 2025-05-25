@@ -28,20 +28,6 @@ const publicRoutes = [
   },
 ];
 
-/*const protectedRoutes = [
-  {
-    path: "/",
-    element: <ProtectedLayout />,
-    errorElement: <NotFoundPage />,
-    children: [
-      {
-        path: "mypage",
-        element: <MyPage />,
-      },
-     
-    ],
-  },
-];*/
 const protectedRoutes = [
   {
     path: "/",
@@ -51,9 +37,7 @@ const protectedRoutes = [
       {
         path: "mypage",
         element: <HomeLayout />,
-        children: [
-          { index: true, element: <MyPage /> },
-        ],
+        children: [{ index: true, element: <MyPage /> }],
       },
     ],
   },

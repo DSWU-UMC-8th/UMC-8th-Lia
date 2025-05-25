@@ -38,10 +38,6 @@ export const postLogout = async () => {
   return data;
 };
 
-
-
-
-
 export const updateMyInfo = async ({
   name,
   bio,
@@ -60,7 +56,7 @@ export const updateMyInfo = async ({
 };
 
 export const postWithdraw = async () => {
-  const { data } = await axiosInstance.delete("/v1/users"); 
+  const { data } = await axiosInstance.delete("/v1/users");
   return data;
 };
 
