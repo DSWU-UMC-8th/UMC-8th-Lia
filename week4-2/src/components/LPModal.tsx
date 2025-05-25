@@ -1,4 +1,3 @@
-
 import { useRef, useState } from "react";
 import { postLp, uploadImage } from "../apis/lp";
 import { useMutation } from "@tanstack/react-query";
@@ -80,8 +79,15 @@ export default function LPModal({ onClose }: LPModalProps) {
           <IoClose size={24} />
         </button>
 
-        <div className="flex justify-center mb-6 cursor-pointer" onClick={handleImageClick}>
-          <img src={image} alt="LP 썸네일" className="w-28 h-28 rounded-full object-cover" />
+        <div
+          className="flex justify-center mb-6 cursor-pointer"
+          onClick={handleImageClick}
+        >
+          <img
+            src={image}
+            alt="LP 썸네일"
+            className="w-28 h-28 rounded-full object-cover"
+          />
           <input
             ref={inputRef}
             type="file"
@@ -113,23 +119,35 @@ export default function LPModal({ onClose }: LPModalProps) {
             onChange={(e) => setTagInput(e.target.value)}
             className="flex-grow px-3 py-2 rounded bg-zinc-800 text-white"
           />
-          <button onClick={handleAddTag} className="px-3 py-2 bg-gray-500 rounded">
+          <button
+            onClick={handleAddTag}
+            className="px-3 py-2 bg-gray-500 rounded"
+          >
             Add
           </button>
         </div>
 
         <div className="flex flex-wrap gap-2 mb-4">
           {tags.map((tag) => (
-            <div key={tag} className="bg-zinc-700 rounded-full px-3 py-1 text-sm">
+            <div
+              key={tag}
+              className="bg-zinc-700 rounded-full px-3 py-1 text-sm"
+            >
               {tag}{" "}
-              <button onClick={() => setTags(tags.filter((t) => t !== tag))} className="ml-1">
+              <button
+                onClick={() => setTags(tags.filter((t) => t !== tag))}
+                className="ml-1"
+              >
                 ✕
               </button>
             </div>
           ))}
         </div>
 
-        <button onClick={handleSubmit} className="w-full py-2 bg-pink-500 hover:bg-pink-600 rounded">
+        <button
+          onClick={handleSubmit}
+          className="w-full py-2 bg-pink-500 hover:bg-pink-600 rounded"
+        >
           Add LP
         </button>
       </div>

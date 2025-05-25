@@ -74,32 +74,17 @@ export type ResponseCommentListDto = {
   message: string;
 };
 
- export type ResponseLpDto = CommonResponse<Lp>;
+export type ResponseLpDto = CommonResponse<Lp>;
 
-
-
-  export type ResponseLikeLpDto = CommonResponse<{
-    id: number;
-    userId: number;
-    lpId: number;
-  }>;
-  export interface UpdateLpRequest {
+export type ResponseLikeLpDto = CommonResponse<{
+  id: number;
+  userId: number;
+  lpId: number;
+}>;
+export interface UpdateLpRequest {
   lpId: number;
   title: string;
   content: string;
   tags: string[];
   thumbnail: string;
 }
-
-
-  export type RequestLpDto = {
-    lpId: number;
-  }
-  
-
-
-  export type ResponseSearchByTagDto = CommonResponse<{
-    data: Lp[];
-    nextCursor: number;
-    hasNext: boolean;
-  }>;

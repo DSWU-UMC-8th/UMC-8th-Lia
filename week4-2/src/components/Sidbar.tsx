@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { FaSearch, FaUser } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import useDeleteUser from "../hooks/mutation/useDeleteUser"; // ✅ 탈퇴 훅
-import ConfirmModal from "./ConfirmModal"; // ✅ 모달 컴포넌트
+import ConfirmModal from "./ConfirmModal";
 
 interface Props {
   isOpen: boolean;

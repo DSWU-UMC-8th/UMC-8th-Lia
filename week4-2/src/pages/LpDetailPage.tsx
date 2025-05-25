@@ -28,8 +28,8 @@ const LpDetailPage = () => {
   const { mutate: dislikeMutate } = useDeleteLike();*/
   const { mutate: deleteLp } = useDeleteLp();
   const { mutate: updateLp } = useUpdateLp();
-const { mutate: likeMutate } = usePostLike(lpId, userInfo?.data.id);
-const { mutate: dislikeMutate } = useDeleteLike(lpId, userInfo?.data.id);
+  const { mutate: likeMutate } = usePostLike(lpId, userInfo?.data.id);
+  const { mutate: dislikeMutate } = useDeleteLike(lpId, userInfo?.data.id);
 
   const [isEditMode, setIsEditMode] = useState(false);
   const [editTitle, setEditTitle] = useState("");
@@ -38,13 +38,13 @@ const { mutate: dislikeMutate } = useDeleteLike(lpId, userInfo?.data.id);
   const [editThumbnail, setEditThumbnail] = useState("");
 
   const [editTagInput, setEditTagInput] = useState("");
-const handleAddTag = () => {
-  const trimmed = editTagInput.trim();
-  if (trimmed && !editTags.includes(trimmed)) {
-    setEditTags([...editTags, trimmed]);
-  }
-  setEditTagInput("");
-};
+  const handleAddTag = () => {
+    const trimmed = editTagInput.trim();
+    if (trimmed && !editTags.includes(trimmed)) {
+      setEditTags([...editTags, trimmed]);
+    }
+    setEditTagInput("");
+  };
 
   if (!lpData) {
     return (
@@ -75,23 +75,22 @@ const handleAddTag = () => {
     setEditThumbnail(lp.thumbnail ?? "");
     setIsEditMode(true);
   };
-const handleUpdateSubmit = () => {
-  updateLp(
-    {
-      lpId,
-      title: editTitle,
-      content: editContent,
-      tags: editTags,
-      thumbnail: editThumbnail,
-    },
-    {
-      onSuccess: () => {
-        setIsEditMode(false); // 수정 성공 시 수정 모드 종료
+  const handleUpdateSubmit = () => {
+    updateLp(
+      {
+        lpId,
+        title: editTitle,
+        content: editContent,
+        tags: editTags,
+        thumbnail: editThumbnail,
       },
-    }
-  );
-};
-
+      {
+        onSuccess: () => {
+          setIsEditMode(false); // 수정 성공 시 수정 모드 종료
+        },
+      }
+    );
+  };
 
   return (
     <div>
@@ -167,60 +166,59 @@ const handleUpdateSubmit = () => {
 
         <div className="flex flex-wrap justify-center gap-2">
           {isEditMode ? (
-  <>
-    <div className="flex flex-wrap gap-2 mb-4">
-      {editTags.map((tag) => (
-        <div
-          key={tag}
-          className="bg-zinc-700 rounded-full px-3 py-1 text-sm"
-        >
-          {tag}
-          <button
-            onClick={() =>
-              setEditTags(editTags.filter((t) => t !== tag))
-            }
-            className="ml-1"
-          >
-            ✕
-          </button>
-        </div>
-      ))}
-    </div>
-    <div className="flex gap-2 mb-4">
-      <input
-        type="text"
-        className="bg-zinc-800 text-white px-2 py-1 rounded w-full"
-        value={editTagInput}
-        onChange={(e) => setEditTagInput(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            handleAddTag();
-          }
-        }}
-        placeholder="태그를 입력하고 Enter"
-      />
-      <button
-        className="bg-blue-500 text-white px-3 py-1 rounded"
-        onClick={handleAddTag}
-      >
-        추가
-      </button>
-    </div>
-  </>
-) : (
-  <div className="flex flex-wrap justify-center gap-2">
-    {lp.tags.map((tag) => (
-      <span
-        key={tag.id}
-        className="px-3 py-1 bg-zinc-800 rounded-full text-sm text-gray-300"
-      >
-        #{tag.name}
-      </span>
-    ))}
-  </div>
-)}
-
+            <>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {editTags.map((tag) => (
+                  <div
+                    key={tag}
+                    className="bg-zinc-700 rounded-full px-3 py-1 text-sm"
+                  >
+                    {tag}
+                    <button
+                      onClick={() =>
+                        setEditTags(editTags.filter((t) => t !== tag))
+                      }
+                      className="ml-1"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <div className="flex gap-2 mb-4">
+                <input
+                  type="text"
+                  className="bg-zinc-800 text-white px-2 py-1 rounded w-full"
+                  value={editTagInput}
+                  onChange={(e) => setEditTagInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleAddTag();
+                    }
+                  }}
+                  placeholder="태그를 입력하고 Enter"
+                />
+                <button
+                  className="bg-blue-500 text-white px-3 py-1 rounded"
+                  onClick={handleAddTag}
+                >
+                  추가
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-wrap justify-center gap-2">
+              {lp.tags.map((tag) => (
+                <span
+                  key={tag.id}
+                  className="px-3 py-1 bg-zinc-800 rounded-full text-sm text-gray-300"
+                >
+                  #{tag.name}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
         {isEditMode && (

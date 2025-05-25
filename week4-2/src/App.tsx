@@ -12,7 +12,6 @@ import GoogleLoginRedirectPage from "./pages/GoogleLoginRedirectPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools/production";
 import LpDetailPage from "./pages/LpDetailPage";
-import { SearchProvider } from "./context/SearchContext";
 
 const publicRoutes = [
   {
@@ -29,20 +28,6 @@ const publicRoutes = [
   },
 ];
 
-/*const protectedRoutes = [
-  {
-    path: "/",
-    element: <ProtectedLayout />,
-    errorElement: <NotFoundPage />,
-    children: [
-      {
-        path: "mypage",
-        element: <MyPage />,
-      },
-     
-    ],
-  },
-];*/
 const protectedRoutes = [
   {
     path: "/",
@@ -52,9 +37,7 @@ const protectedRoutes = [
       {
         path: "mypage",
         element: <HomeLayout />,
-        children: [
-          { index: true, element: <MyPage /> },
-        ],
+        children: [{ index: true, element: <MyPage /> }],
       },
     ],
   },
@@ -74,14 +57,11 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <SearchProvider>
-          <RouterProvider router={router} />
-        </SearchProvider>
+        <RouterProvider router={router} />
       </AuthProvider>
       {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
     </QueryClientProvider>
   );
 }
-
 
 export default App;

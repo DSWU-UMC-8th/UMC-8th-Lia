@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { postComment } from "../../apis/comment"; 
-
+import { postComment } from "../../apis/comment";
 
 interface CommentFormProps {
   lpId: number;
 }
-
 
 const CommentForm = ({ lpId }: CommentFormProps) => {
   const [content, setContent] = useState("");
@@ -47,4 +45,3 @@ const CommentForm = ({ lpId }: CommentFormProps) => {
 };
 
 export default CommentForm;
-

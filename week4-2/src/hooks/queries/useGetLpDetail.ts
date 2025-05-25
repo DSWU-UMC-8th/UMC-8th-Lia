@@ -6,7 +6,6 @@ import { QUERY_KEY } from "../../constants/key";
 const useGetLpDetail = (id: number) => {
   return useQuery<LpDetail>({
     queryKey: [QUERY_KEY.lps, id],
-    /*queryKey: ["lpDetail", id],*/
     queryFn: () => getLpDetail(id),
   });
 };
